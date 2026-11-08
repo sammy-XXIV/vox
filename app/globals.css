@@ -2,6 +2,7 @@
 
 @theme inline {
   --font-sans: var(--font-space-grotesk);
+  --font-display: var(--font-bebas);
 }
 
 /* Vox canvas background grid */
@@ -30,6 +31,26 @@
 .btn-indigo:hover {
   background: #6366f1;
   box-shadow: 0 0 40px rgba(99, 102, 241, 0.5);
+}
+
+/* Orb float keyframes */
+@keyframes orb1 {
+  from { transform: translate(0, 0) scale(1); }
+  to   { transform: translate(60px, 80px) scale(1.15); }
+}
+@keyframes orb2 {
+  from { transform: translate(0, 0) scale(1.1); }
+  to   { transform: translate(-80px, 60px) scale(0.9); }
+}
+@keyframes orb3 {
+  from { transform: translateX(-50%) scale(0.9); }
+  to   { transform: translateX(-50%) scale(1.1); }
+}
+
+/* Waveform bar bounce */
+@keyframes wave {
+  from { transform: scaleY(0.4); }
+  to   { transform: scaleY(1); }
 }
 
 /* Mic pulse ring */

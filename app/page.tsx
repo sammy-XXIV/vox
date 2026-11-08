@@ -1,4 +1,5 @@
 import Link from 'next/link'
+import { MeshOrbs, HeroReveal, RevealOnScroll, Waveform } from '@/components/LandingMotion'
 
 const features = [
   {
@@ -39,20 +40,12 @@ const sources = ['CSV upload', 'PostgreSQL', 'REST API']
 export default function Landing() {
   return (
     <div className="relative min-h-screen overflow-x-hidden bg-[#090d1a] text-slate-100">
-      {/* Mesh gradient background */}
-      <div
-        aria-hidden="true"
-        className="pointer-events-none fixed inset-0 z-0"
-        style={{
-          background:
-            'radial-gradient(ellipse 80% 60% at 20% 10%, rgba(99,102,241,0.18) 0%, transparent 60%), radial-gradient(ellipse 60% 50% at 80% 80%, rgba(124,58,237,0.14) 0%, transparent 60%), radial-gradient(ellipse 40% 40% at 60% 20%, rgba(99,102,241,0.08) 0%, transparent 50%)',
-        }}
-      />
+      <MeshOrbs />
 
       {/* Nav */}
       <nav className="relative z-10 flex items-center justify-between px-6 py-5 sm:px-10">
-        <span className="text-xl font-semibold tracking-tight">
-          Vox<span className="text-indigo-400">.</span>
+        <span className="font-display text-2xl tracking-widest">
+          VOX<span className="text-indigo-400">.</span>
         </span>
         <Link
           href="/canvas"
@@ -70,15 +63,7 @@ export default function Landing() {
           Builder.io Agent-Native Hackathon
         </div>
 
-        <h1 className="mb-6 text-5xl font-semibold leading-[1.1] tracking-tight sm:text-7xl">
-          Talk to your{' '}
-          <span
-            className="bg-clip-text text-transparent"
-            style={{ backgroundImage: 'linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #c4b5fd 100%)' }}
-          >
-            data.
-          </span>
-        </h1>
+        <HeroReveal line1="TALK TO YOUR" line2="DATA." />
 
         <p className="mx-auto mb-10 max-w-xl text-base leading-relaxed text-slate-400 sm:text-lg">
           Voice in. AI queries. Live charts. One canvas shared between you and your agent — built on Agent-Native shared actions.
@@ -95,12 +80,16 @@ export default function Landing() {
             </svg>
             Open Canvas
           </Link>
-          <span className="text-sm text-slate-500">Drop a CSV. Speak a question.</span>
+          <div className="flex items-center gap-2 text-sm text-slate-500">
+            <Waveform active />
+            <span>Drop a CSV. Speak a question.</span>
+          </div>
         </div>
       </section>
 
       {/* App mockup */}
-      <section className="relative z-10 mx-auto mb-24 max-w-5xl px-4 sm:px-6">
+      <RevealOnScroll className="relative z-10 mx-auto mb-24 max-w-5xl px-4 sm:px-6" delay={0.1}>
+      <section>
         <div
           className="overflow-hidden rounded-2xl border border-white/10 backdrop-blur-sm"
           style={{ background: 'rgba(15, 23, 42, 0.7)', boxShadow: '0 0 80px rgba(99,102,241,0.15), 0 40px 80px rgba(0,0,0,0.5)' }}
@@ -174,9 +163,11 @@ export default function Landing() {
           </div>
         </div>
       </section>
+      </RevealOnScroll>
 
       {/* Feature grid */}
-      <section className="relative z-10 mx-auto mb-24 max-w-5xl px-6 sm:px-10">
+      <RevealOnScroll className="relative z-10 mx-auto mb-24 max-w-5xl px-6 sm:px-10" delay={0}>
+      <section>
         <h2 className="mb-12 text-center text-2xl font-semibold tracking-tight sm:text-3xl">
           Every action shared between you and your agent
         </h2>
@@ -196,6 +187,7 @@ export default function Landing() {
           ))}
         </div>
       </section>
+      </RevealOnScroll>
 
       {/* Sources strip */}
       <section className="relative z-10 mx-auto mb-24 max-w-5xl px-6 text-center sm:px-10">
@@ -218,7 +210,7 @@ export default function Landing() {
           className="rounded-3xl border border-indigo-500/20 p-10 backdrop-blur-sm"
           style={{ background: 'rgba(99,102,241,0.08)', boxShadow: '0 0 60px rgba(99,102,241,0.1)' }}
         >
-          <h2 className="mb-4 text-3xl font-semibold tracking-tight">Ready to listen?</h2>
+          <h2 className="mb-4 font-display text-5xl tracking-widest">READY TO LISTEN?</h2>
           <p className="mb-8 text-slate-400">Drop a CSV, speak a question, watch the canvas fill.</p>
           <Link
             href="/canvas"

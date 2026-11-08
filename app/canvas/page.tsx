@@ -62,8 +62,8 @@ export default function CanvasPage() {
       <header className="flex h-14 shrink-0 items-center justify-between border-b border-white/5 px-5"
         style={{ background: 'rgba(9,13,26,0.9)', backdropFilter: 'blur(12px)' }}>
         <div className="flex items-center gap-3">
-          <Link href="/" className="text-lg font-semibold tracking-tight hover:opacity-80 transition-opacity">
-            Vox<span className="text-indigo-400">.</span>
+          <Link href="/" className="font-display text-xl tracking-widest hover:opacity-80 transition-opacity">
+            VOX<span className="text-indigo-400">.</span>
           </Link>
           <span className="hidden rounded-full border border-indigo-500/20 bg-indigo-500/10 px-2.5 py-0.5 text-xs text-indigo-400 sm:inline">
             canvas
