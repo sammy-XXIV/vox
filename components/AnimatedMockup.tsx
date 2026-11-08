@@ -40,7 +40,7 @@ function AnimatedBars({ go }: { go: boolean }) {
             transitionDuration: `${500 + i * 80}ms`,
             transitionTimingFunction: 'cubic-bezier(0.34,1.56,0.64,1)',
             transitionDelay: go ? `${i * 60}ms` : '0ms',
-            background: 'linear-gradient(to top, #4f46e5, #818cf8)',
+            background: 'linear-gradient(to top, #333, #aaa)',
           }}
         />
       ))}
@@ -52,9 +52,9 @@ function AnimatedBars({ go }: { go: boolean }) {
 const R = 13
 const CIRC = 2 * Math.PI * R
 const SLICES = [
-  { pct: 0.38, color: '#4f46e5' },
-  { pct: 0.30, color: '#7c3aed' },
-  { pct: 0.32, color: '#818cf8' },
+  { pct: 0.38, color: '#00d4ff' },
+  { pct: 0.30, color: '#555' },
+  { pct: 0.32, color: '#999' },
 ]
 
 function AnimatedDonut({ go }: { go: boolean }) {
@@ -95,11 +95,16 @@ export default function AnimatedMockup() {
   const [donutGo, setDonutGo] = useState(false)
   const loopRef = useRef<ReturnType<typeof setTimeout> | null>(null)
 
-  /* Auto-loop the whole sequence */
+  /* All animations fire together, then loop */
   function runSequence() {
     setStep(-1); setBarsGo(false); setDonutGo(false); setTyping(false)
-    // step 0 after 400ms
-    loopRef.current = setTimeout(() => { setStep(0); setTyping(true) }, 400)
+    loopRef.current = setTimeout(() => {
+      setStep(AGENT_STEPS.length - 1) // show all cards at once
+      setTyping(true)                  // typewriter on last card only
+      setBarsGo(true)
+      setDonutGo(true)
+    }, 300)
+    loopRef.current = setTimeout(runSequence, 5000)
   }
 
   useEffect(() => {
@@ -108,26 +113,12 @@ export default function AnimatedMockup() {
   // eslint-disable-next-line react-hooks/exhaustive-deps
   }, [])
 
-  function onTypeDone() {
-    setTyping(false)
-    // advance to next step after a pause
-    loopRef.current = setTimeout(() => {
-      setStep((s) => {
-        const next = s + 1
-        if (next < AGENT_STEPS.length) { setTyping(true); return next }
-        // last step done — start charts
-        setTimeout(() => { setBarsGo(true); setDonutGo(true) }, 300)
-        // restart loop after 4 s
-        setTimeout(runSequence, 4500)
-        return next
-      })
-    }, 400)
-  }
+  function onTypeDone() { setTyping(false) }
 
   return (
     <div
-      className="overflow-hidden rounded-2xl border border-white/10 backdrop-blur-sm"
-      style={{ background: 'rgba(15, 23, 42, 0.7)', boxShadow: '0 0 80px rgba(99,102,241,0.15), 0 40px 80px rgba(0,0,0,0.5)' }}
+      className="overflow-hidden rounded-2xl border border-white/8 backdrop-blur-sm"
+      style={{ background: 'rgba(10,10,10,0.9)', boxShadow: '0 0 80px rgba(0,212,255,0.06), 0 40px 80px rgba(0,0,0,0.6)' }}
     >
       {/* Title bar */}
       <div className="flex items-center gap-2 border-b border-white/5 px-4 py-3">
@@ -140,26 +131,22 @@ export default function AnimatedMockup() {
       <div className="flex h-64 sm:h-96">
         {/* Agent panel */}
         <div className="hidden w-56 shrink-0 border-r border-white/5 p-4 sm:block">
-          <p className="mb-4 text-[10px] font-medium uppercase tracking-widest text-slate-500">Agent activity</p>
+          <p className="mb-4 text-[10px] font-medium uppercase tracking-widest text-white/30">Agent activity</p>
           <div className="space-y-3">
             {AGENT_STEPS.map((item, i) => (
               <div
                 key={i}
                 className={`rounded-lg border p-2 text-xs transition-all duration-300 ${
-                  step < i
+                  step < 0
                     ? 'invisible opacity-0'
                     : item.type === 'thinking'
-                      ? 'border-slate-700/50 bg-slate-800/40 italic text-slate-400'
+                      ? 'border-white/8 bg-white/5 italic text-white/40'
                       : item.type === 'action'
-                        ? 'border-indigo-500/20 bg-indigo-500/10 font-mono text-indigo-400'
-                        : 'border-violet-500/20 bg-violet-500/10 text-slate-200'
+                        ? 'border-[#00d4ff]/20 bg-[#00d4ff]/5 font-mono text-[#00d4ff]/80'
+                        : 'border-white/8 bg-white/5 text-white/80'
                 }`}
               >
-                {step === i && typing
-                  ? <Typewriter text={item.text} onDone={onTypeDone} />
-                  : step > i || (step === i && !typing)
-                    ? item.text
-                    : null}
+                {step >= 0 && <Typewriter key={step} text={item.text} onDone={i === AGENT_STEPS.length - 1 ? onTypeDone : undefined} />}
               </div>
             ))}
           </div>
@@ -169,26 +156,26 @@ export default function AnimatedMockup() {
         <div className="flex flex-1 flex-col gap-3 p-4">
           <div className="flex gap-3 overflow-hidden">
             {/* Bar chart */}
-            <div className="flex-1 overflow-hidden rounded-xl border border-indigo-500/10 bg-slate-900/60 p-3">
-              <p className="mb-2 text-xs font-medium text-slate-300">Revenue by Region</p>
+            <div className="flex-1 overflow-hidden rounded-xl border border-white/5 bg-white/3 p-3">
+              <p className="mb-2 text-xs font-medium text-white/60">Revenue by Region</p>
               <AnimatedBars go={barsGo} />
             </div>
             {/* Donut */}
-            <div className="hidden flex-1 items-center justify-center rounded-xl border border-violet-500/10 bg-slate-900/60 p-3 sm:flex">
-              <p className="text-xs font-medium text-slate-300">Category Split</p>
+            <div className="hidden flex-1 items-center justify-center rounded-xl border border-white/5 bg-white/3 p-3 sm:flex">
+              <p className="text-xs font-medium text-white/60">Category Split</p>
               <AnimatedDonut go={donutGo} />
             </div>
           </div>
 
           {/* Voice bar */}
-          <div className="mt-auto flex items-center gap-3 rounded-xl border border-indigo-500/20 bg-indigo-500/10 px-4 py-3">
-            <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-indigo-600">
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" aria-hidden="true">
+          <div className="mt-auto flex items-center gap-3 rounded-xl border border-[#00d4ff]/20 bg-[#00d4ff]/5 px-4 py-3">
+            <div className="flex size-8 shrink-0 items-center justify-center rounded-full bg-[#00d4ff]">
+              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="black" strokeWidth="2" aria-hidden="true">
                 <rect x="9" y="2" width="6" height="12" rx="3" />
                 <path d="M5 10v2a7 7 0 0 0 14 0v-2" />
               </svg>
             </div>
-            <span className="text-xs text-indigo-300">show monthly revenue by region →</span>
+            <span className="text-xs text-[#00d4ff]/70">show monthly revenue by region →</span>
           </div>
         </div>
       </div>

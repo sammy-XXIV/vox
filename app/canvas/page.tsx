@@ -16,6 +16,7 @@ function parseEvent(line: string): AgentEvent | null {
   if (!payload || payload === '[DONE]') return null
   const event: unknown = JSON.parse(payload)
   if (typeof event !== 'object' || event === null || !('type' in event)) throw new Error('Invalid agent event.')
+  if (event.type === 'patch' && 'patch' in event) return { type: 'patch', patch: event.patch as never }
   if (event.type === 'action' && 'name' in event && typeof event.name === 'string' && 'args' in event) return { type: 'action', name: event.name, args: event.args }
   if (['thinking', 'result', 'error'].includes(String(event.type)) && 'text' in event && typeof event.text === 'string') return { type: event.type as 'thinking' | 'result' | 'error', text: event.text }
   throw new Error('Invalid agent event.')
@@ -23,11 +24,12 @@ function parseEvent(line: string): AgentEvent | null {
 
 export default function CanvasPage() {
   const { state: canvasState } = useCanvasStore()
-  const [events, setEvents] = useState<AgentEvent[]>([])
+  const [events, setEvents] = useState<Exclude<AgentEvent, { type: 'patch' }>[]>([])
   const [busy, setBusy] = useState(false)
   const activeRequest = useRef<AbortController | null>(null)
   useEffect(() => () => activeRequest.current?.abort(), [])
 
+  const { apply } = useCanvasStore()
   const submit = useCallback(async (message: string) => {
     if (!message.trim() || activeRequest.current) return
     const controller = new AbortController()
@@ -40,7 +42,15 @@ export default function CanvasPage() {
       const reader = response.body.getReader()
       const decoder = new TextDecoder()
       let buffer = ''
-      const append = (line: string) => { const event = parseEvent(line); if (event) setEvents((previous) => [...previous, event]) }
+      const append = (line: string) => {
+        const event = parseEvent(line)
+        if (!event) return
+        if (event.type === 'patch') {
+          apply(event.patch)
+        } else {
+          setEvents((previous) => [...previous, event])
+        }
+      }
       try {
         while (true) {
           const { done, value } = await reader.read()
@@ -54,23 +64,23 @@ export default function CanvasPage() {
     } catch (reason) {
       if (!controller.signal.aborted) setEvents((previous) => [...previous, { type: 'error', text: reason instanceof Error ? reason.message : 'Could not contact Vox.' }])
     } finally { activeRequest.current = null; if (!controller.signal.aborted) setBusy(false) }
-  }, [canvasState])
+  }, [canvasState, apply])
 
   return (
-    <div className="flex h-dvh flex-col overflow-hidden bg-[#090d1a] text-slate-100">
+    <div className="flex h-dvh flex-col overflow-hidden bg-[#0a0a0a] text-white">
       {/* Header */}
       <header className="flex h-14 shrink-0 items-center justify-between border-b border-white/5 px-5"
-        style={{ background: 'rgba(9,13,26,0.9)', backdropFilter: 'blur(12px)' }}>
+        style={{ background: 'rgba(5,5,5,0.95)', backdropFilter: 'blur(12px)' }}>
         <div className="flex items-center gap-3">
           <Link href="/" className="font-display text-xl tracking-widest hover:opacity-80 transition-opacity">
-            VOX<span className="text-indigo-400">.</span>
+            VOX<span className="text-[#00d4ff]">.</span>
           </Link>
-          <span className="hidden rounded-full border border-indigo-500/20 bg-indigo-500/10 px-2.5 py-0.5 text-xs text-indigo-400 sm:inline">
+          <span className="hidden rounded-full border border-white/10 bg-white/5 px-2.5 py-0.5 text-xs text-white/40 sm:inline">
             canvas
           </span>
         </div>
-        <div className="flex items-center gap-2 text-xs text-slate-500">
-          <span className={`size-1.5 rounded-full ${busy ? 'bg-indigo-400 animate-pulse' : 'bg-slate-600'}`} />
+        <div className="flex items-center gap-2 text-xs text-white/30">
+          <span className={`size-1.5 rounded-full ${busy ? 'bg-[#00d4ff] animate-pulse' : 'bg-white/20'}`} />
           {busy ? 'Agent working…' : `rev ${canvasState.revision}`}
         </div>
       </header>

@@ -5,11 +5,12 @@ import { connectDataSourceAction } from '@/actions/connect-data-source'
 import { useCanvasStore } from '@/lib/store'
 import type { DataSource } from '@/lib/types'
 
-const inputClass = 'w-full rounded-lg border border-white/8 bg-white/5 px-3 py-2 text-sm text-slate-200 outline-none placeholder:text-slate-600 focus:border-indigo-500/50 focus:ring-1 focus:ring-indigo-500/40 disabled:opacity-50'
+const inputClass = 'w-full rounded-lg border border-white/8 bg-white/5 px-3 py-2 text-sm text-white/80 outline-none placeholder:text-white/20 focus:border-[#00d4ff]/40 focus:ring-1 focus:ring-[#00d4ff]/30 disabled:opacity-50'
 const buttonClass = 'w-full rounded-lg btn-indigo px-3 py-2.5 text-sm font-medium text-white disabled:opacity-40'
 
 export default function DataSourcePanel() {
   const { state } = useCanvasStore()
+  const [open, setOpen] = useState(true)
   const [pending, setPending] = useState<DataSource['kind'] | null>(null)
   const inFlight = useRef(false)
   const [errors, setErrors] = useState<Partial<Record<DataSource['kind'], string>>>({})
@@ -30,8 +31,16 @@ export default function DataSourcePanel() {
       setErrors((previous) => ({ ...previous, [kind]: reason instanceof Error ? reason.message : 'Could not connect data source.' }))
     } finally { inFlight.current = false; setPending(null) }
   }
-  return <aside aria-label="Data sources" className="h-full w-64 shrink-0 space-y-5 overflow-y-auto border-l border-white/5 p-3" style={{ background: 'rgba(9,13,26,0.85)', backdropFilter: 'blur(12px)' }}>
-    <h2 className="text-[10px] font-medium uppercase tracking-widest text-slate-500">Data sources</h2>
+  return <aside aria-label="Data sources" className={`h-full shrink-0 overflow-hidden border-l border-white/5 transition-all duration-200 ${open ? 'w-64' : 'w-10'}`} style={{ background: 'rgba(5,5,5,0.9)', backdropFilter: 'blur(12px)' }}>
+    <div className="flex items-center justify-between px-3 py-3">
+      <button onClick={() => setOpen(!open)} aria-label={open ? 'Collapse data sources' : 'Expand data sources'} className="flex size-6 items-center justify-center rounded text-white/30 hover:bg-white/8 hover:text-white/60 transition-colors">
+        <svg width="12" height="12" viewBox="0 0 12 12" fill="none" stroke="currentColor" strokeWidth="1.5" aria-hidden="true">
+          {open ? <path d="M4 2l4 4-4 4" /> : <path d="M8 2L4 6l4 4" />}
+        </svg>
+      </button>
+      {open && <h2 className="text-[10px] font-medium uppercase tracking-widest text-white/30">Data sources</h2>}
+    </div>
+    {open && <div className="overflow-y-auto px-3 pb-3 space-y-5" style={{ height: 'calc(100% - 40px)' }}>
     <section className="space-y-2">
       <label htmlFor="csv-file" className="block text-sm font-medium">CSV file</label>
       <input id="csv-file" type="file" accept=".csv,text/csv" disabled={pending !== null} className="w-full text-xs text-zinc-400 file:mr-2 file:rounded-lg file:border-0 file:bg-zinc-800 file:px-3 file:py-2 file:text-zinc-100 disabled:opacity-50" onChange={(event) => {
@@ -67,8 +76,9 @@ export default function DataSourcePanel() {
     </form>
     <section className="space-y-3 border-t border-zinc-800 pt-4">
       <h3 className="text-sm font-medium">Connected <span className="text-zinc-500">{state.dataSources.length}</span></h3>
-      {!state.dataSources.length && <p className="text-xs text-zinc-500">Connect a source to start exploring.</p>}
-      <ul className="space-y-2">{state.dataSources.map((source) => <li key={source.id} className="rounded-lg border border-zinc-800 bg-zinc-950 p-3"><p className="truncate text-sm" title={source.label}>{source.label}</p><p className="mt-1 text-xs text-zinc-500">{source.kind.toUpperCase()} · {source.schema.length} columns · {source.rows.length} rows</p></li>)}</ul>
+      {!state.dataSources.length && <p className="text-xs text-white/30">Connect a source to start exploring.</p>}
+      <ul className="space-y-2">{state.dataSources.map((source) => <li key={source.id} className="rounded-lg border border-white/8 bg-white/3 p-3"><p className="truncate text-sm text-white/80" title={source.label}>{source.label}</p><p className="mt-1 text-xs text-white/30">{source.kind.toUpperCase()} · {source.schema.length} columns · {source.rows.length} rows</p></li>)}</ul>
     </section>
+    </div>}
   </aside>
 }

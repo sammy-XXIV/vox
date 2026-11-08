@@ -1,8 +1,7 @@
 import { z } from 'zod'
 import { nanoid } from 'nanoid'
-import { useCanvasStore } from '@/lib/store'
 import { runQueryAction } from './run-query'
-import type { ChartTile } from '@/lib/types'
+import type { CanvasState, ChartTile } from '@/lib/types'
 
 const CHART_TYPES = ['bar', 'line', 'scatter', 'pie', 'choropleth'] as const
 
@@ -19,12 +18,12 @@ export const addChartAction = {
   name: 'addChart',
   description: 'Add a chart to the canvas. chartType: bar | line | scatter | pie | choropleth',
   inputSchema: schema,
-  async run(input: AddChartInput): Promise<{ chartId: string } | { error: string }> {
+  async run(input: AddChartInput, ctx?: { state: CanvasState }): Promise<{ chartId: string; tile: ChartTile } | { error: string }> {
     const parsed = schema.safeParse(input)
     if (!parsed.success) return { error: parsed.error.message }
 
     const { sourceId, chartType, query, title } = parsed.data
-    const dataResult = await runQueryAction.run({ sourceId, query })
+    const dataResult = await runQueryAction.run({ sourceId, query }, ctx)
     if ('error' in dataResult) return dataResult
 
     const chartId = nanoid()
@@ -39,9 +38,6 @@ export const addChartAction = {
       size: { w: 400, h: 300 },
     }
 
-    const { state, apply } = useCanvasStore.getState()
-    apply({ charts: [...state.charts, tile] })
-
-    return { chartId }
+    return { chartId, tile }
   },
 }

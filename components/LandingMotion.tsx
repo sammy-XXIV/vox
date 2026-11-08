@@ -7,23 +7,23 @@ export function MeshOrbs() {
   return (
     <div aria-hidden="true" className="pointer-events-none fixed inset-0 z-0 overflow-hidden">
       <div
-        className="absolute -left-40 -top-40 h-[600px] w-[600px] rounded-full opacity-30"
+        className="absolute -left-40 -top-40 h-[600px] w-[600px] rounded-full opacity-10"
         style={{
-          background: 'radial-gradient(circle, rgba(99,102,241,0.6) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.3) 0%, transparent 70%)',
           animation: 'orb1 12s ease-in-out infinite alternate',
         }}
       />
       <div
-        className="absolute -right-40 top-1/3 h-[500px] w-[500px] rounded-full opacity-20"
+        className="absolute -right-40 top-1/3 h-[500px] w-[500px] rounded-full opacity-8"
         style={{
-          background: 'radial-gradient(circle, rgba(124,58,237,0.7) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(0,212,255,0.25) 0%, transparent 70%)',
           animation: 'orb2 15s ease-in-out infinite alternate',
         }}
       />
       <div
-        className="absolute bottom-0 left-1/2 h-[400px] w-[400px] -translate-x-1/2 rounded-full opacity-15"
+        className="absolute bottom-0 left-1/2 h-[400px] w-[400px] -translate-x-1/2 rounded-full opacity-6"
         style={{
-          background: 'radial-gradient(circle, rgba(99,102,241,0.5) 0%, transparent 70%)',
+          background: 'radial-gradient(circle, rgba(255,255,255,0.15) 0%, transparent 70%)',
           animation: 'orb3 10s ease-in-out infinite alternate',
         }}
       />
@@ -126,7 +126,7 @@ export function HeroReveal({ line1, line2 }: { line1: string; line2: string }) {
           key={i}
           className="word mr-[0.2em] inline-block bg-clip-text text-transparent"
           style={{
-            backgroundImage: 'linear-gradient(135deg, #818cf8 0%, #a78bfa 50%, #c4b5fd 100%)',
+            backgroundImage: 'linear-gradient(135deg, #ffffff 0%, #00d4ff 100%)',
             transformOrigin: 'bottom',
           }}
         >
@@ -145,7 +145,7 @@ export function Waveform({ active = false }: { active?: boolean }) {
       {bars.map((h, i) => (
         <div
           key={i}
-          className="w-[3px] rounded-full bg-indigo-400"
+          className="w-[3px] rounded-full bg-[#00d4ff]"
           style={{
             height: active ? `${h * 2}px` : '4px',
             transition: `height ${0.15 + i * 0.02}s ease`,

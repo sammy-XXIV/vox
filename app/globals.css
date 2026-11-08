@@ -7,30 +7,31 @@
 
 /* Vox canvas background grid */
 .vox-grid-bg {
-  background-color: #090d1a;
+  background-color: #0a0a0a;
   background-image:
-    linear-gradient(rgba(99, 102, 241, 0.04) 1px, transparent 1px),
-    linear-gradient(90deg, rgba(99, 102, 241, 0.04) 1px, transparent 1px);
+    linear-gradient(rgba(255,255,255,0.03) 1px, transparent 1px),
+    linear-gradient(90deg, rgba(255,255,255,0.03) 1px, transparent 1px);
   background-size: 40px 40px;
 }
 
 /* Glass surface */
 .glass {
-  background: rgba(15, 23, 42, 0.75);
+  background: rgba(10, 10, 10, 0.85);
   backdrop-filter: blur(16px);
   -webkit-backdrop-filter: blur(16px);
   border: 1px solid rgba(255, 255, 255, 0.07);
 }
 
-/* Indigo glow button */
+/* Cyan glow button */
 .btn-indigo {
-  background: #4f46e5;
-  box-shadow: 0 0 24px rgba(99, 102, 241, 0.35);
-  transition: background 150ms, box-shadow 150ms;
+  background: #000;
+  border: 1px solid rgba(0, 212, 255, 0.5);
+  box-shadow: 0 0 20px rgba(0, 212, 255, 0.2);
+  transition: border-color 150ms, box-shadow 150ms;
 }
 .btn-indigo:hover {
-  background: #6366f1;
-  box-shadow: 0 0 40px rgba(99, 102, 241, 0.5);
+  border-color: #00d4ff;
+  box-shadow: 0 0 36px rgba(0, 212, 255, 0.4);
 }
 
 /* Orb float keyframes */

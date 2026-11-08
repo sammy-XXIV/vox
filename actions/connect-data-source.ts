@@ -2,7 +2,6 @@ import { z } from 'zod'
 import { nanoid } from 'nanoid'
 import { parseCSV } from '@/lib/data/csv'
 import { fetchAPI } from '@/lib/data/rest-api'
-import { useCanvasStore } from '@/lib/store'
 import type { ColumnDef, DataSource } from '@/lib/types'
 
 const schema = z.object({
@@ -22,7 +21,7 @@ export const connectDataSourceAction = {
   inputSchema: schema,
   async run(
     input: ConnectDataSourceInput
-  ): Promise<{ sourceId: string; schema: ColumnDef[] } | { error: string }> {
+  ): Promise<{ sourceId: string; schema: ColumnDef[]; source: DataSource } | { error: string }> {
     const parsed = schema.safeParse(input)
     if (!parsed.success) return { error: parsed.error.message }
 
@@ -55,9 +54,6 @@ export const connectDataSourceAction = {
       headers,
     }
 
-    const { state, apply } = useCanvasStore.getState()
-    apply({ dataSources: [...state.dataSources, source] })
-
-    return { sourceId, schema: result.schema }
+    return { sourceId, schema: result.schema, source }
   },
 }

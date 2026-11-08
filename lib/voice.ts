@@ -1,6 +1,6 @@
 'use client'
 
-import { useCallback, useEffect, useRef, useState, useSyncExternalStore } from 'react'
+import { useCallback, useEffect, useRef, useState } from 'react'
 
 type Recognition = {
   continuous: boolean
@@ -17,17 +17,16 @@ type VoiceWindow = Window & {
   SpeechRecognition?: new () => Recognition
   webkitSpeechRecognition?: new () => Recognition
 }
-const subscribe = () => () => {}
-function isSupported() {
-  const browser = window as VoiceWindow
-  return Boolean(browser.SpeechRecognition || browser.webkitSpeechRecognition)
-}
-
 export function useVoice() {
   const [transcript, setTranscript] = useState('')
   const [listening, setListening] = useState(false)
+  const [supported, setSupported] = useState(false)
   const recognition = useRef<Recognition | null>(null)
-  const supported = useSyncExternalStore(subscribe, isSupported, () => false)
+
+  useEffect(() => {
+    const browser = window as VoiceWindow
+    setSupported(Boolean(browser.SpeechRecognition || browser.webkitSpeechRecognition))
+  }, [])
 
   useEffect(() => () => {
     if (recognition.current) {

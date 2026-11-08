@@ -40,17 +40,17 @@ const sources = ['CSV upload', 'PostgreSQL', 'REST API']
 
 export default function Landing() {
   return (
-    <div className="relative min-h-screen overflow-x-hidden bg-[#090d1a] text-slate-100">
+    <div className="relative min-h-screen overflow-x-hidden bg-[#0a0a0a] text-white">
       <MeshOrbs />
 
       {/* Nav */}
       <nav className="relative z-10 flex items-center justify-between px-6 py-5 sm:px-10">
         <span className="font-display text-2xl tracking-widest">
-          VOX<span className="text-indigo-400">.</span>
+          VOX<span className="text-[#00d4ff]">.</span>
         </span>
         <Link
           href="/canvas"
-          className="rounded-full border border-indigo-500/40 bg-indigo-500/10 px-5 py-2 text-sm font-medium text-indigo-300 backdrop-blur-sm transition-all duration-200 hover:border-indigo-400/70 hover:bg-indigo-500/20 hover:text-indigo-200 focus-visible:outline-2 focus-visible:outline-indigo-400"
+          className="rounded-full border border-white/15 bg-white/5 px-5 py-2 text-sm font-medium text-white/70 backdrop-blur-sm transition-all duration-200 hover:border-white/30 hover:bg-white/10 hover:text-white focus-visible:outline-2 focus-visible:outline-white/50"
         >
           Open Canvas →
         </Link>
@@ -59,21 +59,21 @@ export default function Landing() {
       {/* Hero */}
       <section className="relative z-10 mx-auto max-w-5xl px-6 pb-20 pt-24 text-center sm:px-10 sm:pt-32">
         {/* Badge */}
-        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-violet-500/20 bg-violet-500/10 px-4 py-1.5 text-xs font-medium text-violet-300 backdrop-blur-sm">
-          <span className="size-1.5 rounded-full bg-violet-400" />
+        <div className="mb-8 inline-flex items-center gap-2 rounded-full border border-white/10 bg-white/5 px-4 py-1.5 text-xs font-medium text-white/50 backdrop-blur-sm">
+          <span className="size-1.5 rounded-full bg-[#00d4ff]" />
           Builder.io Agent-Native Hackathon
         </div>
 
         <HeroReveal line1="TALK TO YOUR" line2="DATA." />
 
-        <p className="mx-auto mb-10 max-w-xl text-base leading-relaxed text-slate-400 sm:text-lg">
+        <p className="mx-auto mb-10 max-w-xl text-base leading-relaxed text-white/50 sm:text-lg">
           Voice in. AI queries. Live charts. One canvas shared between you and your agent — built on Agent-Native shared actions.
         </p>
 
         <div className="flex flex-col items-center gap-4 sm:flex-row sm:justify-center">
           <Link
             href="/canvas"
-            className="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-7 py-3 text-sm font-medium text-white shadow-[0_0_40px_rgba(99,102,241,0.4)] transition-all duration-200 hover:bg-indigo-500 hover:shadow-[0_0_60px_rgba(99,102,241,0.5)] focus-visible:outline-2 focus-visible:outline-indigo-400"
+            className="inline-flex items-center gap-2 rounded-full border border-[#00d4ff]/60 bg-[#00d4ff]/10 px-7 py-3 text-sm font-medium text-[#00d4ff] shadow-[0_0_32px_rgba(0,212,255,0.2)] transition-all duration-200 hover:border-[#00d4ff] hover:bg-[#00d4ff]/20 hover:shadow-[0_0_48px_rgba(0,212,255,0.35)] focus-visible:outline-2 focus-visible:outline-[#00d4ff]"
           >
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
               <rect x="9" y="2" width="6" height="12" rx="3" />
@@ -81,7 +81,7 @@ export default function Landing() {
             </svg>
             Open Canvas
           </Link>
-          <div className="flex items-center gap-2 text-sm text-slate-500">
+          <div className="flex items-center gap-2 text-sm text-white/30">
             <Waveform active />
             <span>Drop a CSV. Speak a question.</span>
           </div>
@@ -105,14 +105,14 @@ export default function Landing() {
           {features.map((f) => (
             <div
               key={f.title}
-              className="rounded-2xl border border-white/8 p-6 backdrop-blur-sm transition-all duration-200 hover:border-indigo-500/30"
-              style={{ background: 'rgba(15, 23, 42, 0.6)' }}
+              className="rounded-2xl border border-white/8 p-6 backdrop-blur-sm transition-all duration-200 hover:border-[#00d4ff]/20"
+              style={{ background: 'rgba(255,255,255,0.03)' }}
             >
-              <div className="mb-4 flex size-10 items-center justify-center rounded-xl border border-indigo-500/20 bg-indigo-500/10 text-indigo-400">
+              <div className="mb-4 flex size-10 items-center justify-center rounded-xl border border-white/10 bg-white/5 text-white/60">
                 {f.icon}
               </div>
-              <h3 className="mb-2 font-semibold">{f.title}</h3>
-              <p className="text-sm leading-relaxed text-slate-400">{f.description}</p>
+              <h3 className="mb-2 font-semibold text-white">{f.title}</h3>
+              <p className="text-sm leading-relaxed text-white/40">{f.description}</p>
             </div>
           ))}
         </div>
@@ -121,12 +121,12 @@ export default function Landing() {
 
       {/* Sources strip */}
       <section className="relative z-10 mx-auto mb-24 max-w-5xl px-6 text-center sm:px-10">
-        <p className="mb-6 text-sm font-medium uppercase tracking-widest text-slate-500">Connect any source</p>
+        <p className="mb-6 text-sm font-medium uppercase tracking-widest text-white/30">Connect any source</p>
         <div className="flex flex-wrap justify-center gap-3">
           {sources.map((s) => (
             <span
               key={s}
-              className="rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm text-slate-300 backdrop-blur-sm"
+              className="rounded-full border border-white/10 bg-white/5 px-5 py-2 text-sm text-white/60 backdrop-blur-sm"
             >
               {s}
             </span>
@@ -137,14 +137,14 @@ export default function Landing() {
       {/* Bottom CTA */}
       <section className="relative z-10 mx-auto mb-20 max-w-2xl px-6 text-center sm:px-10">
         <div
-          className="rounded-3xl border border-indigo-500/20 p-10 backdrop-blur-sm"
-          style={{ background: 'rgba(99,102,241,0.08)', boxShadow: '0 0 60px rgba(99,102,241,0.1)' }}
+          className="rounded-3xl border border-white/8 p-10 backdrop-blur-sm"
+          style={{ background: 'rgba(255,255,255,0.03)', boxShadow: '0 0 60px rgba(0,212,255,0.04)' }}
         >
           <h2 className="mb-4 font-display text-5xl tracking-widest">READY TO LISTEN?</h2>
-          <p className="mb-8 text-slate-400">Drop a CSV, speak a question, watch the canvas fill.</p>
+          <p className="mb-8 text-white/40">Drop a CSV, speak a question, watch the canvas fill.</p>
           <Link
             href="/canvas"
-            className="inline-flex items-center gap-2 rounded-full bg-indigo-600 px-8 py-3.5 font-medium text-white shadow-[0_0_40px_rgba(99,102,241,0.4)] transition-all duration-200 hover:bg-indigo-500 hover:shadow-[0_0_60px_rgba(99,102,241,0.5)] focus-visible:outline-2 focus-visible:outline-indigo-400"
+            className="inline-flex items-center gap-2 rounded-full border border-[#00d4ff]/60 bg-[#00d4ff]/10 px-8 py-3.5 font-medium text-[#00d4ff] shadow-[0_0_32px_rgba(0,212,255,0.2)] transition-all duration-200 hover:border-[#00d4ff] hover:bg-[#00d4ff]/20 hover:shadow-[0_0_48px_rgba(0,212,255,0.35)] focus-visible:outline-2 focus-visible:outline-[#00d4ff]"
           >
             Open Canvas
             <svg width="16" height="16" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true">
@@ -155,7 +155,7 @@ export default function Landing() {
       </section>
 
       {/* Footer */}
-      <footer className="relative z-10 border-t border-white/5 px-6 py-6 text-center text-xs text-slate-600">
+      <footer className="relative z-10 border-t border-white/5 px-6 py-6 text-center text-xs text-white/20">
         Built for Builder.io Agent-Native Hackathon · Vox
       </footer>
     </div>

@@ -1,7 +1,7 @@
 import { z } from 'zod'
 import { useCanvasStore } from '@/lib/store'
 import { createPool, runSQL } from '@/lib/data/postgres'
-import type { ColumnDef, Row } from '@/lib/types'
+import type { CanvasState, ColumnDef, Row } from '@/lib/types'
 
 const schema = z.object({
   sourceId: z.string(),
@@ -35,13 +35,13 @@ export const runQueryAction = {
   name: 'runQuery',
   description: 'Query a connected data source. For CSV/REST use a filter expression like "age > 30". For Postgres use SQL.',
   inputSchema: schema,
-  async run(input: RunQueryInput): Promise<{ rows: Row[]; schema: ColumnDef[] } | { error: string }> {
+  async run(input: RunQueryInput, ctx?: { state: CanvasState }): Promise<{ rows: Row[]; schema: ColumnDef[] } | { error: string }> {
     const parsed = schema.safeParse(input)
     if (!parsed.success) return { error: parsed.error.message }
 
     const { sourceId, query } = parsed.data
-    const { state } = useCanvasStore.getState()
-    const source = state.dataSources.find((s) => s.id === sourceId)
+    const storeState = ctx?.state ?? useCanvasStore.getState().state
+    const source = storeState.dataSources.find((s) => s.id === sourceId)
     if (!source) return { error: `Unknown sourceId: ${sourceId}` }
 
     if (source.kind === 'postgres') {

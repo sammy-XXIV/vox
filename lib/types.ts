@@ -54,5 +54,6 @@ export type CanvasState = {
 export type AgentEvent =
   | { type: 'thinking'; text: string }
   | { type: 'action'; name: string; args: unknown }
+  | { type: 'patch'; patch: Partial<CanvasState> }
   | { type: 'result'; text: string }
   | { type: 'error'; text: string }
