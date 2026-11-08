@@ -10,5 +10,5 @@ export const metadata: Metadata = {
 }
 
 export default function RootLayout({ children }: { children: React.ReactNode }) {
-  return <html lang="en" className={`${spaceGrotesk.variable} antialiased`}><body className="min-h-screen bg-zinc-950 font-sans text-zinc-100">{children}</body></html>
+  return <html lang="en" className={`${spaceGrotesk.variable} antialiased`}><body className="min-h-screen bg-[#090d1a] font-sans text-slate-100">{children}</body></html>
 }

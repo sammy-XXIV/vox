@@ -31,10 +31,10 @@ export default function ChartTile({ tile, annotations }: { tile: ChartTileType; 
       if ('error' in result) setError(result.error)
     } catch { setError('Could not save annotation.') }
   }
-  return <article className="min-w-0 overflow-hidden rounded-xl border border-zinc-800 bg-zinc-900">
-    <header className="flex items-center justify-between gap-3 border-b border-zinc-800 px-4 py-3">
-      <h2 className="truncate text-sm font-medium">{tile.title || tile.chartType}</h2>
-      <div className="flex items-center gap-3"><button type="button" onClick={() => void annotate('50:50')} className="text-xs text-zinc-400 hover:text-indigo-400">Annotate</button><button type="button" aria-label={`Remove ${tile.title || tile.chartType}`} disabled={busy} className="rounded px-2 text-zinc-400 hover:bg-zinc-800 hover:text-red-400 disabled:opacity-40" onClick={async () => {
+  return <article className="min-w-0 overflow-hidden rounded-xl border border-white/8" style={{ background: 'rgba(15,23,42,0.75)', backdropFilter: 'blur(12px)' }}>
+    <header className="flex items-center justify-between gap-3 border-b border-white/5 px-4 py-3">
+      <h2 className="truncate text-sm font-medium text-slate-200">{tile.title || tile.chartType}</h2>
+      <div className="flex items-center gap-3"><button type="button" onClick={() => void annotate('50:50')} className="text-xs text-slate-500 hover:text-indigo-400 transition-colors">Annotate</button><button type="button" aria-label={`Remove ${tile.title || tile.chartType}`} disabled={busy} className="rounded px-2 text-slate-500 hover:bg-white/5 hover:text-red-400 transition-colors disabled:opacity-40" onClick={async () => {
         setBusy(true); setError('')
         try { const result = await removeChartAction.run({ chartId: tile.id, revision: useCanvasStore.getState().state.revision }); if ('error' in result) setError(result.error) } catch { setError('Could not remove chart.') } finally { setBusy(false) }
       }}>×</button></div>

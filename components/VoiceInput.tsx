@@ -13,13 +13,13 @@ export default function VoiceInput({ onSubmit, disabled = false }: { onSubmit: (
   }, [listening, transcript, disabled, onSubmit])
 
   return (
-    <div className="rounded-2xl border border-zinc-700 bg-zinc-900 p-3 shadow-2xl">
+    <div className="rounded-2xl border border-indigo-500/20 p-3 shadow-2xl" style={{ background: 'rgba(9,13,26,0.92)', backdropFilter: 'blur(20px)', boxShadow: '0 0 60px rgba(99,102,241,0.15), 0 20px 60px rgba(0,0,0,0.5)' }}>
       {supported ? (
         <div className="flex items-center gap-3">
-          <button type="button" disabled={disabled} onClick={listening ? stop : start} aria-label={listening ? 'Stop listening' : 'Start listening'} aria-pressed={listening} className={`flex size-12 shrink-0 items-center justify-center rounded-full text-white transition focus-visible:outline-2 focus-visible:outline-indigo-400 disabled:opacity-40 ${listening ? 'animate-pulse bg-red-500' : 'bg-indigo-500 hover:bg-indigo-400'}`}>
+          <button type="button" disabled={disabled} onClick={listening ? stop : start} aria-label={listening ? 'Stop listening' : 'Start listening'} aria-pressed={listening} className={`flex size-12 shrink-0 items-center justify-center rounded-full text-white transition-all duration-200 focus-visible:outline-2 focus-visible:outline-indigo-400 disabled:opacity-40 ${listening ? 'mic-active bg-red-500' : 'btn-indigo'}`}>
             <svg width="22" height="22" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" aria-hidden="true"><rect x="9" y="2" width="6" height="12" rx="3" /><path d="M5 10v2a7 7 0 0 0 14 0v-2M12 19v3m-4 0h8" /></svg>
           </button>
-          <p aria-live="polite" className="min-w-0 break-words text-sm text-zinc-300">{transcript || (listening ? 'Listening…' : disabled ? 'Vox is working…' : 'Ask Vox to visualize your data')}</p>
+          <p aria-live="polite" className="min-w-0 break-words text-sm text-slate-300">{transcript || (listening ? 'Listening…' : disabled ? 'Vox is working…' : 'Speak a question or describe a chart')}</p>
         </div>
       ) : (
         <form className="flex items-end gap-3" onSubmit={(event) => { event.preventDefault(); if (text.trim() && !disabled) { onSubmit(text.trim()); setText('') } }}>
