@@ -1,5 +1,6 @@
 import Link from 'next/link'
 import { MeshOrbs, HeroReveal, RevealOnScroll, Waveform } from '@/components/LandingMotion'
+import AnimatedMockup from '@/components/AnimatedMockup'
 
 const features = [
   {
@@ -90,78 +91,7 @@ export default function Landing() {
       {/* App mockup */}
       <RevealOnScroll className="relative z-10 mx-auto mb-24 max-w-5xl px-4 sm:px-6" delay={0.1}>
       <section>
-        <div
-          className="overflow-hidden rounded-2xl border border-white/10 backdrop-blur-sm"
-          style={{ background: 'rgba(15, 23, 42, 0.7)', boxShadow: '0 0 80px rgba(99,102,241,0.15), 0 40px 80px rgba(0,0,0,0.5)' }}
-        >
-          {/* Fake titlebar */}
-          <div className="flex items-center gap-2 border-b border-white/5 px-4 py-3">
-            <span className="size-3 rounded-full bg-red-500/70" />
-            <span className="size-3 rounded-full bg-yellow-500/70" />
-            <span className="size-3 rounded-full bg-green-500/70" />
-            <span className="ml-auto text-xs text-slate-500">vox.app/canvas</span>
-          </div>
-          {/* Fake app UI */}
-          <div className="flex h-64 sm:h-96">
-            {/* Agent panel */}
-            <div className="hidden w-56 shrink-0 border-r border-white/5 p-4 sm:block">
-              <p className="mb-4 text-[10px] font-medium uppercase tracking-widest text-slate-500">Agent activity</p>
-              <div className="space-y-3">
-                {[
-                  { type: 'thinking', text: 'Parsing "show monthly revenue by region"…' },
-                  { type: 'action', text: '▶ runQuery({ query: "month, region" })' },
-                  { type: 'result', text: 'Added bar chart: Revenue by Region' },
-                ].map((item, i) => (
-                  <div
-                    key={i}
-                    className={`rounded-lg border p-2 text-xs ${
-                      item.type === 'thinking'
-                        ? 'border-slate-700/50 bg-slate-800/40 italic text-slate-400'
-                        : item.type === 'action'
-                          ? 'border-indigo-500/20 bg-indigo-500/10 font-mono text-indigo-400'
-                          : 'border-violet-500/20 bg-violet-500/10 text-slate-200'
-                    }`}
-                  >
-                    {item.text}
-                  </div>
-                ))}
-              </div>
-            </div>
-            {/* Canvas */}
-            <div className="flex flex-1 flex-col gap-3 p-4">
-              <div className="flex gap-3 overflow-hidden">
-                {/* Bar chart mock */}
-                <div className="flex-1 overflow-hidden rounded-xl border border-indigo-500/10 bg-slate-900/60 p-3">
-                  <p className="mb-2 text-xs font-medium text-slate-300">Revenue by Region</p>
-                  <div className="flex h-28 items-end gap-2">
-                    {[65, 85, 50, 90, 70, 60].map((h, i) => (
-                      <div key={i} className="flex-1 rounded-t" style={{ height: `${h}%`, background: 'linear-gradient(to top, #4f46e5, #818cf8)' }} />
-                    ))}
-                  </div>
-                </div>
-                {/* Pie chart mock */}
-                <div className="hidden flex-1 items-center justify-center rounded-xl border border-violet-500/10 bg-slate-900/60 p-3 sm:flex">
-                  <p className="text-xs font-medium text-slate-300">Category Split</p>
-                  <svg width="80" height="80" viewBox="0 0 32 32" className="ml-3">
-                    <circle r="16" cx="16" cy="16" fill="transparent" stroke="#4f46e5" strokeWidth="10" strokeDasharray="30 70" strokeDashoffset="0" />
-                    <circle r="16" cx="16" cy="16" fill="transparent" stroke="#7c3aed" strokeWidth="10" strokeDasharray="25 75" strokeDashoffset="-30" />
-                    <circle r="16" cx="16" cy="16" fill="transparent" stroke="#818cf8" strokeWidth="10" strokeDasharray="20 80" strokeDashoffset="-55" />
-                  </svg>
-                </div>
-              </div>
-              {/* Voice bar */}
-              <div className="mt-auto flex items-center gap-3 rounded-xl border border-indigo-500/20 bg-indigo-500/10 px-4 py-3">
-                <div className="size-8 shrink-0 rounded-full bg-indigo-600 flex items-center justify-center">
-                  <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="white" strokeWidth="2" aria-hidden="true">
-                    <rect x="9" y="2" width="6" height="12" rx="3" />
-                    <path d="M5 10v2a7 7 0 0 0 14 0v-2" />
-                  </svg>
-                </div>
-                <span className="text-xs text-indigo-300">show monthly revenue by region →</span>
-              </div>
-            </div>
-          </div>
-        </div>
+        <AnimatedMockup />
       </section>
       </RevealOnScroll>
 
