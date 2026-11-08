@@ -1,36 +1,70 @@
-This is a [Next.js](https://nextjs.org) project bootstrapped with [`create-next-app`](https://nextjs.org/docs/app/api-reference/cli/create-next-app).
+# Vox — Voice-First Analytics Canvas
 
-## Getting Started
+> Speak your query. Watch the data appear.
 
-First, run the development server:
+Vox is a voice-first analytics canvas where you talk to an AI agent and charts materialize in real time. Built for the **Builder.io Agent-Native Hackathon**.
 
-```bash
-npm run dev
-# or
-yarn dev
-# or
-pnpm dev
-# or
-bun dev
+---
+
+## What it does
+
+- **Voice input** — press the mic, say "show me revenue by month as a bar chart"
+- **AI agent** — connects data sources, runs queries, picks chart types autonomously
+- **Live canvas** — charts stream onto a zoomable canvas as the agent acts
+- **Brush zoom** — drag to zoom into any time range on bar/line charts with >10 data points
+- **Agent panel** — real-time trace of every action the agent takes
+
+## Stack
+
+| Layer | Tech |
+|---|---|
+| Framework | Next.js 16 App Router + Turbopack |
+| Styling | Tailwind v4 |
+| State | Zustand |
+| Charts | Recharts |
+| Agent | Anthropic Claude (SSE streaming) |
+| Voice | Web Speech API |
+
+## Architecture
+
+```
+Voice → SSE agent loop → actions (ctx-threaded) → patch events → Zustand → Canvas
 ```
 
-Open [http://localhost:3000](http://localhost:3000) with your browser to see the result.
+Actions run server-side with canvas state threaded via `ctx`. Agent yields `patch` events; client applies them to Zustand store so canvas updates in real time.
 
-You can start editing the page by modifying `app/page.tsx`. The page auto-updates as you edit the file.
+## Setup
 
-This project uses [`next/font`](https://nextjs.org/docs/app/building-your-application/optimizing/fonts) to automatically optimize and load [Geist](https://vercel.com/font), a new font family for Vercel.
+```bash
+pnpm install
+```
 
-## Learn More
+Create `.env.local`:
 
-To learn more about Next.js, take a look at the following resources:
+```
+ANTHROPIC_API_KEY=your_key_here
+ANTHROPIC_BASE_URL=https://api.anthropic.com/v1
+```
 
-- [Next.js Documentation](https://nextjs.org/docs) - learn about Next.js features and API.
-- [Learn Next.js](https://nextjs.org/learn) - an interactive Next.js tutorial.
+```bash
+pnpm dev
+# open http://localhost:3000
+```
 
-You can check out [the Next.js GitHub repository](https://github.com/vercel/next.js) - your feedback and contributions are welcome!
+## Actions
 
-## Deploy on Vercel
+| Action | What it does |
+|---|---|
+| `connectDataSource` | Register CSV, Postgres, or REST endpoint |
+| `runQuery` | Execute SQL or filter against a source |
+| `addChart` | Create bar/line/scatter/pie tile on canvas |
+| `removeChart` | Remove a tile |
+| `updateChartPosition` | Move a tile |
+| `filterDataset` | Apply column filter to source |
+| `annotatePoint` | Add annotation to a data point |
 
-The easiest way to deploy your Next.js app is to use the [Vercel Platform](https://vercel.com/new?utm_medium=default-template&filter=next.js&utm_source=create-next-app&utm_campaign=create-next-app-readme) from the creators of Next.js.
+## Deploy
 
-Check out our [Next.js deployment documentation](https://nextjs.org/docs/app/building-your-application/deploying) for more details.
+[![Deploy with Vercel](https://vercel.com/button)](https://vercel.com/new/clone?repository-url=https://github.com/sammy-XXIV/vox)
+
+Set `ANTHROPIC_API_KEY` and `ANTHROPIC_BASE_URL` in Vercel environment variables.
