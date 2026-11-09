@@ -1,0 +1,5 @@
+<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 32 32" fill="none">
+  <title>Vox</title>
+  <rect x=".5" y=".5" width="31" height="31" rx="7" fill="#0A0A0A" stroke="#333"/>
+  <path d="M6 7h6l4 13 4-13h6l-7 19h-6L6 7Z" fill="#00D4FF"/>
+</svg>

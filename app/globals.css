@@ -63,3 +63,30 @@
 .mic-active {
   animation: mic-ring 1.2s ease-out infinite;
 }
+
+/* The illustrative demo plays once; its final state is the readable default. */
+@keyframes demo-reveal {
+  from { opacity: 0; transform: translateY(8px); }
+  to { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes demo-bar {
+  from { transform: scaleY(0); }
+  to { transform: scaleY(1); }
+}
+
+@media (prefers-reduced-motion: no-preference) {
+  .demo-step { animation: demo-reveal 450ms ease-out both; }
+  .demo-step-0 { animation-delay: 200ms; }
+  .demo-step-1 { animation-delay: 1000ms; }
+  .demo-step-2 { animation-delay: 1800ms; }
+  .demo-charts { animation: demo-reveal 500ms ease-out 2100ms both; }
+  .demo-bar { transform-origin: bottom; animation: demo-bar 650ms ease-out both; }
+}
+
+@media (prefers-reduced-motion: reduce) {
+  .landing-page *, .landing-page *::before, .landing-page *::after {
+    animation: none !important;
+    transition: none !important;
+  }
+}

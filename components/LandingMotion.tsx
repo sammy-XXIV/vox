@@ -44,33 +44,35 @@ export function RevealOnScroll({ children, className = '', delay = 0 }: { childr
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
     if (reduced) return
 
-    let ctx: { revert: () => void } | null = null
+    let disposed = false
+    let revert: (() => void) | undefined
 
-    import('gsap').then(({ gsap: g }) => {
-      import('gsap/ScrollTrigger').then(({ ScrollTrigger: ST }) => {
-        g.registerPlugin(ST)
-        ctx = g.context(() => {
-          g.fromTo(
-            el,
-            { opacity: 0, y: 32 },
-            {
-              opacity: 1,
-              y: 0,
-              duration: 0.7,
-              delay,
-              ease: 'power3.out',
-              scrollTrigger: { trigger: el, start: 'top 88%', once: true },
-            }
-          )
-        })
+    Promise.all([import('gsap'), import('gsap/ScrollTrigger')]).then(([{ gsap: g }, { ScrollTrigger: ST }]) => {
+      if (disposed) return
+      g.registerPlugin(ST)
+      const media = g.matchMedia()
+      revert = () => media.revert()
+      media.add('(prefers-reduced-motion: no-preference)', () => {
+        g.fromTo(
+          el,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            delay,
+            ease: 'power3.out',
+            scrollTrigger: { trigger: el, start: 'top 88%', once: true },
+          }
+        )
       })
-    })
+    }).catch(() => { /* Content remains visible if optional motion cannot load. */ })
 
-    return () => { ctx?.revert() }
+    return () => { disposed = true; revert?.() }
   }, [delay])
 
   return (
-    <div ref={ref} className={className} style={{ opacity: 0 }}>
+    <div ref={ref} className={className}>
       {children}
     </div>
   )
@@ -85,25 +87,30 @@ export function HeroReveal({ line1, line2 }: { line1: string; line2: string }) {
     const el = ref.current
     if (!el) return
     const reduced = window.matchMedia('(prefers-reduced-motion: reduce)').matches
-    if (reduced) { el.style.opacity = '1'; return }
+    if (reduced) return
 
+    let disposed = false
+    let revert: (() => void) | undefined
     import('gsap').then(({ gsap }) => {
+      if (disposed) return
       const words = el.querySelectorAll<HTMLSpanElement>('.word')
-      gsap.fromTo(
-        words,
-        { opacity: 0, y: 40, rotateX: -60 },
-        {
-          opacity: 1,
-          y: 0,
-          rotateX: 0,
-          duration: 0.6,
-          stagger: 0.07,
-          ease: 'back.out(1.5)',
-          delay: 0.2,
-        }
-      )
-      gsap.to(el, { opacity: 1, duration: 0 })
-    })
+      const media = gsap.matchMedia()
+      revert = () => media.revert()
+      media.add('(prefers-reduced-motion: no-preference)', () => {
+        gsap.fromTo(
+          words,
+          { opacity: 0, y: 20 },
+          {
+            opacity: 1,
+            y: 0,
+            duration: 0.5,
+            stagger: 0.07,
+            ease: 'power3.out',
+          }
+        )
+      })
+    }).catch(() => { /* The heading is readable without the animation module. */ })
+    return () => { disposed = true; revert?.() }
   }, [])
 
   const words1 = line1.split(' ')
@@ -112,8 +119,7 @@ export function HeroReveal({ line1, line2 }: { line1: string; line2: string }) {
   return (
     <h1
       ref={ref}
-      style={{ opacity: 0, perspective: '800px' }}
-      className="mb-6 font-display text-[72px] leading-[0.95] tracking-widest sm:text-[120px]"
+      className="mb-6 font-display text-[clamp(3.25rem,11vw,7.5rem)] leading-[0.98] tracking-wide"
     >
       {words1.map((w, i) => (
         <span key={i} className="word mr-[0.2em] inline-block" style={{ transformOrigin: 'bottom' }}>
